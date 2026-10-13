@@ -1,0 +1,212 @@
+/* 모든 요소의 크기 계산 기준 */
+* {
+  box-sizing: border-box;
+}
+
+/* 전체 배경과 글씨 */
+body {
+  margin: 0;
+  padding: 40px 20px;
+  font-family: "맑은 고딕", sans-serif;
+  color: #354b32;
+  background: #f0f8e8;
+  background-image:
+    radial-gradient(circle at 10% 10%, #dcefc7 0, transparent 30%),
+    radial-gradient(circle at 90% 80%, #e3f2d1 0, transparent 30%);
+}
+
+/* 가운데 배치 */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* 제목 영역 */
+header {
+  position: relative;
+  text-align: center;
+  padding: 35px 20px;
+  margin-bottom: 28px;
+  background: #e2f1cd;
+  border: 2px solid #c7e2ac;
+  border-radius: 30px;
+}
+
+header::after {
+  content: "🌱 🍀 🌿";
+  display: block;
+  margin-top: 16px;
+  font-size: 26px;
+  letter-spacing: 12px;
+}
+
+h1 {
+  margin: 0 0 12px;
+  color: #426b32;
+  font-size: 36px;
+}
+
+header p {
+  margin: 0;
+  color: #536b46;
+  line-height: 1.7;
+}
+
+/* 등록·목록 카드 */
+section {
+  margin-bottom: 24px;
+  padding: 28px;
+  background: #ffffff;
+  border: 2px solid #dfedcf;
+  border-radius: 26px;
+  box-shadow: 0 6px 18px rgba(79, 112, 49, 0.07);
+}
+
+h2 {
+  margin: 0 0 22px;
+  color: #426b32;
+  font-size: 22px;
+}
+
+h2::before {
+  content: "🌿";
+  margin-right: 8px;
+}
+
+/* 입력 칸 배치 */
+#food-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+#food-form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* 입력 칸과 선택 메뉴 */
+input,
+select {
+  width: 100%;
+  min-width: 0;
+  padding: 13px 15px;
+  font: inherit;
+  color: #354b32;
+  background: #f8fbf3;
+  border: 2px solid #dce9cc;
+  border-radius: 14px;
+}
+
+input::placeholder {
+  color: #74826a;
+}
+
+input:focus,
+select:focus {
+  outline: 3px solid #e2f1cd;
+  border-color: #78a34e;
+}
+
+/* 버튼 */
+button {
+  padding: 14px 22px;
+  font: inherit;
+  font-weight: bold;
+  color: #ffffff;
+  background: #557b35;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+button:hover:not(:disabled) {
+  background: #426529;
+  transform: translateY(-2px);
+}
+
+button:focus-visible {
+  outline: 3px solid #354b32;
+  outline-offset: 3px;
+}
+
+#food-form > button {
+  grid-column: 1 / -1;
+}
+
+button:disabled {
+  color: #536544;
+  background: #dce9cc;
+  cursor: not-allowed;
+}
+
+/* 안내 문구 */
+section > p {
+  margin: 16px 0 0;
+  font-size: 13px;
+  color: #657659;
+  line-height: 1.6;
+}
+
+/* 목록 표 */
+table {
+  width: 100%;
+  border-spacing: 0;
+  border: 1px solid #dfedcf;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 16px 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+th {
+  color: #426b32;
+  background: #eaf4dc;
+  white-space: nowrap;
+}
+
+td {
+  border-top: 1px solid #e7efdd;
+}
+
+td[colspan] {
+  padding: 38px 12px;
+  color: #657659;
+  background: #fcfdf9;
+}
+
+/* 작은 화면에서는 입력 칸을 한 줄씩 배치 */
+@media (max-width: 600px) {
+  body {
+    padding: 20px 12px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  section {
+    padding: 20px 14px;
+    overflow-x: auto;
+  }
+
+  #food-form {
+    grid-template-columns: 1fr;
+  }
+
+  table {
+    min-width: 560px;
+  }
+}
