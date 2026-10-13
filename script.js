@@ -7,7 +7,43 @@ const storage = document.getElementById("storage");
 const foodList = document.getElementById("food-list");
 
 // 등록한 식품을 보관할 배열
-const foods = [];
+// 식품 데이터를 저장할 이름
+const STORAGE_KEY = "fridge-keeper-foods";
+
+// 기존에 저장한 목록 불러오기
+const foods = loadFoods();
+
+function loadFoods() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (saved === null) {
+      return [];
+    }
+
+    const parsed = JSON.parse(saved);
+
+    if (!Array.isArray(parsed)) {
+      throw new Error("식품 목록 형식이 올바르지 않습니다.");
+    }
+
+    return parsed;
+  } catch (error) {
+    console.error("데이터 불러오기 실패:", error);
+    alert("저장된 식품 목록을 불러오지 못했습니다.");
+    return [];
+  }
+}
+
+// 현재 식품 목록 저장
+function saveFoods() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(foods));
+  } catch (error) {
+    console.error("데이터 저장 실패:", error);
+    alert("데이터를 저장하지 못했습니다. 브라우저 설정을 확인해 주세요.");
+  }
+}
 
 // 식품 목록을 화면에 표시
 function renderFoods() {
@@ -57,6 +93,7 @@ deleteButton.addEventListener("click", function () {
 
   if (confirmed) {
     foods.splice(index, 1);
+    saveFoods();
     renderFoods();
   }
 });
@@ -96,6 +133,7 @@ foodForm.addEventListener("submit", function (event) {
   };
 
   foods.push(food);
+  saveFoods();
   renderFoods();
 
   // 등록 후 입력 칸 초기화
