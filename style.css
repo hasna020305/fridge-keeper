@@ -244,3 +244,11 @@ td[colspan] {
   color: #a3433b;
   font-weight: bold;
 }
+
+/* 식품 검색 영역 */
+.search-box {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 20px;
+}

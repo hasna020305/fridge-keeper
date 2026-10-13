@@ -5,6 +5,7 @@ const expiryDate = document.getElementById("expiry-date");
 const quantity = document.getElementById("quantity");
 const storage = document.getElementById("storage");
 const foodList = document.getElementById("food-list");
+const searchInput = document.getElementById("search-input");
 
 // 등록한 식품을 보관할 배열
 // 식품 데이터를 저장할 이름
@@ -82,21 +83,30 @@ function getExpiryLabel(days) {
 function renderFoods() {
   foodList.replaceChildren();
 
-  // 식품이 없으면 안내 문구 표시
-  if (foods.length === 0) {
+  const keyword = searchInput.value.trim().toLowerCase();
+
+  // 이름에 검색어가 포함된 식품 선택
+  const filteredFoods = foods.filter(function (food) {
+    return food.name.toLowerCase().includes(keyword);
+  });
+
+  // 표시할 식품이 없으면 안내 문구 표시
+  if (filteredFoods.length === 0) {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
 
     cell.colSpan = 6;
-    cell.textContent = "등록된 식품이 없습니다.";
-
+    cell.textContent = keyword
+     ? "검색 결과가 없습니다."
+     : "등록된 식품이 없습니다.";
+    
     row.appendChild(cell);
     foodList.appendChild(row);
     return;
   }
 
   // 식품이 있으면 한 개씩 행 만들기
-  foods.forEach(function (food, index) {
+  filteredFoods.forEach(function (food) {
     const row = document.createElement("tr");
     const remainingDays = getRemainingDays(food.expiryDate);
 
@@ -133,6 +143,7 @@ function renderFoods() {
       const confirmed = confirm(food.name + "을(를) 삭제할까요?");
 
       if (confirmed) {
+        const index = foods.indexOf(food);
         foods.splice(index, 1);
         saveFoods();
         renderFoods();
@@ -179,6 +190,11 @@ foodForm.addEventListener("submit", function (event) {
   // 등록 후 입력 칸 초기화
   foodForm.reset();
   foodName.focus();
+});
+
+// 검색어가 바뀔 때마다 목록 갱신
+searchInput.addEventListener("input", function () {
+  renderFoods();
 });
 
 renderFoods();
