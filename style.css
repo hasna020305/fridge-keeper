@@ -252,3 +252,15 @@ td[colspan] {
   gap: 9px;
   margin-bottom: 20px;
 }
+
+/* 정렬 메뉴 */
+.sort-box {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 20px;
+}
+
+.sort-box select {
+  max-width: 300px;
+}

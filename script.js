@@ -6,6 +6,7 @@ const quantity = document.getElementById("quantity");
 const storage = document.getElementById("storage");
 const foodList = document.getElementById("food-list");
 const searchInput = document.getElementById("search-input");
+const sortSelect = document.getElementById("sort-select");
 
 // 등록한 식품을 보관할 배열
 // 식품 데이터를 저장할 이름
@@ -89,6 +90,17 @@ function renderFoods() {
   const filteredFoods = foods.filter(function (food) {
     return food.name.toLowerCase().includes(keyword);
   });
+
+// 검색 결과를 선택한 기준으로 정렬
+if (sortSelect.value === "expiry") {
+  filteredFoods.sort(function (a, b) {
+    return a.expiryDate.localeCompare(b.expiryDate);
+  });
+} else if (sortSelect.value === "name") {
+  filteredFoods.sort(function (a, b) {
+    return a.name.localeCompare(b.name, "ko");
+  });
+}
 
   // 표시할 식품이 없으면 안내 문구 표시
   if (filteredFoods.length === 0) {
@@ -194,6 +206,11 @@ foodForm.addEventListener("submit", function (event) {
 
 // 검색어가 바뀔 때마다 목록 갱신
 searchInput.addEventListener("input", function () {
+  renderFoods();
+});
+
+// 정렬 기준이 바뀌면 목록 갱신
+sortSelect.addEventListener("change", function () {
   renderFoods();
 });
 
