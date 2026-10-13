@@ -25,7 +25,7 @@ function renderFoods() {
     return;
   }
 
-  foods.forEach(function (food) {
+  foods.forEach(function (food, index) {
     const row = document.createElement("tr");
 
     const values = [
@@ -34,16 +34,37 @@ function renderFoods() {
       food.quantity,
       food.storage,
       "계산 기능 준비 중",
-      "-"
     ];
 
     values.forEach(function (value) {
-      const cell = document.createElement("td");
-      cell.textContent = value;
-      row.appendChild(cell);
-    });
+  const cell = document.createElement("td");
+  cell.textContent = value;
+  row.appendChild(cell);
+});
 
-    foodList.appendChild(row);
+// 관리 칸에 삭제 버튼 만들기
+const manageCell = document.createElement("td");
+const deleteButton = document.createElement("button");
+
+deleteButton.type = "button";
+deleteButton.textContent = "삭제";
+deleteButton.className = "delete-button";
+deleteButton.setAttribute("aria-label", food.name + " 삭제");
+
+// 버튼 클릭 시 해당 식품 삭제
+deleteButton.addEventListener("click", function () {
+  const confirmed = confirm(food.name + "을(를) 삭제할까요?");
+
+  if (confirmed) {
+    foods.splice(index, 1);
+    renderFoods();
+  }
+});
+
+manageCell.appendChild(deleteButton);
+row.appendChild(manageCell);
+
+foodList.appendChild(row);
   });
 }
 

@@ -210,3 +210,17 @@ td[colspan] {
     min-width: 560px;
   }
 }
+
+/* 식품 삭제 버튼 */
+.delete-button {
+  padding: 8px 14px;
+  font-size: 13px;
+  color: #87443f;
+  background: #fbe9e5;
+  border: 1px solid #efcec7;
+  border-radius: 12px;
+}
+
+.delete-button:hover:not(:disabled) {
+  background: #f5d5cd;
+}
