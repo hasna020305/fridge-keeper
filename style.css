@@ -224,3 +224,23 @@ td[colspan] {
 .delete-button:hover:not(:disabled) {
   background: #f5d5cd;
 }
+
+/* 오늘부터 3일 이내: 연한 노란색 */
+.expiring-soon {
+  background: #fff8df;
+}
+
+.expiring-soon td:nth-child(5) {
+  color: #805b12;
+  font-weight: bold;
+}
+
+/* 유통기한 경과: 연한 분홍색 */
+.expired {
+  background: #fff0ed;
+}
+
+.expired td:nth-child(5) {
+  color: #a3433b;
+  font-weight: bold;
+}

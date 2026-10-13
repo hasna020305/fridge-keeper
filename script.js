@@ -45,10 +45,44 @@ function saveFoods() {
   }
 }
 
+// 유통기한까지 남은 날짜 계산
+function getRemainingDays(dateText) {
+  const [year, month, day] = dateText.split("-").map(Number);
+  const today = new Date();
+
+  // 시간은 제외하고 날짜만 비교
+  const expiry = Date.UTC(year, month - 1, day);
+  const current = Date.UTC(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
+
+  return Math.round((expiry - current) / (1000 * 60 * 60 * 24));
+}
+
+// 남은 날짜에 따라 표시 문구 결정
+function getExpiryLabel(days) {
+  if (days < 0) {
+    return Math.abs(days) + "일 경과";
+  }
+
+  if (days === 0) {
+    return "오늘까지";
+  }
+
+  if (days <= 3) {
+    return days + "일 남음 · 임박";
+  }
+
+  return days + "일 남음";
+}
+
 // 식품 목록을 화면에 표시
 function renderFoods() {
   foodList.replaceChildren();
 
+  // 식품이 없으면 안내 문구 표시
   if (foods.length === 0) {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
@@ -61,47 +95,53 @@ function renderFoods() {
     return;
   }
 
+  // 식품이 있으면 한 개씩 행 만들기
   foods.forEach(function (food, index) {
     const row = document.createElement("tr");
+    const remainingDays = getRemainingDays(food.expiryDate);
+
+    if (remainingDays < 0) {
+      row.className = "expired";
+    } else if (remainingDays <= 3) {
+      row.className = "expiring-soon";
+    }
 
     const values = [
       food.name,
       food.expiryDate,
       food.quantity,
       food.storage,
-      "계산 기능 준비 중",
+      getExpiryLabel(remainingDays)
     ];
 
     values.forEach(function (value) {
-  const cell = document.createElement("td");
-  cell.textContent = value;
-  row.appendChild(cell);
-});
+      const cell = document.createElement("td");
+      cell.textContent = value;
+      row.appendChild(cell);
+    });
 
-// 관리 칸에 삭제 버튼 만들기
-const manageCell = document.createElement("td");
-const deleteButton = document.createElement("button");
+    // 관리 칸에 삭제 버튼 만들기
+    const manageCell = document.createElement("td");
+    const deleteButton = document.createElement("button");
 
-deleteButton.type = "button";
-deleteButton.textContent = "삭제";
-deleteButton.className = "delete-button";
-deleteButton.setAttribute("aria-label", food.name + " 삭제");
+    deleteButton.type = "button";
+    deleteButton.textContent = "삭제";
+    deleteButton.className = "delete-button";
+    deleteButton.setAttribute("aria-label", food.name + " 삭제");
 
-// 버튼 클릭 시 해당 식품 삭제
-deleteButton.addEventListener("click", function () {
-  const confirmed = confirm(food.name + "을(를) 삭제할까요?");
+    deleteButton.addEventListener("click", function () {
+      const confirmed = confirm(food.name + "을(를) 삭제할까요?");
 
-  if (confirmed) {
-    foods.splice(index, 1);
-    saveFoods();
-    renderFoods();
-  }
-});
+      if (confirmed) {
+        foods.splice(index, 1);
+        saveFoods();
+        renderFoods();
+      }
+    });
 
-manageCell.appendChild(deleteButton);
-row.appendChild(manageCell);
-
-foodList.appendChild(row);
+    manageCell.appendChild(deleteButton);
+    row.appendChild(manageCell);
+    foodList.appendChild(row);
   });
 }
 
